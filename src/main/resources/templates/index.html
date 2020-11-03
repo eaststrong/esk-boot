@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5" xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <title>Thymeleafexamples - Spring Security</title>
+    <meta charset="utf-8" />
+    <link href="../../static/css/main.css" rel="stylesheet" th:href="@{/css/main.css}" />
+  </head>
+  <body>
+    <div class="logout" sec:authorize="isAuthenticated()" th:fragment="logout">
+      Logged user:
+      <span sec:authentication="name">Bob</span>
+      &nbsp;
+      | Roles:
+      <span sec:authentication="principal.authorities">[ROLE_USER, ROLE_ADMIN]</span>
+      &nbsp;
+      |
+      <form method="post" style="display:inline" th:action="@{/logout}">
+        <input type="submit" value="Logout" />
+      </form>
+    </div>
+    <h1>Thymeleafexamples - Spring Security</h1>
+    <p>This is a demo of Thymeleaf and Spring-Security integration.</p>
+    <h2>Private pages</h2>
+    <p>This is a public page, but you can navigate to protected pages to trigger authentication.</p>
+    <ul>
+      <li>
+        Go to
+        <a href="admin/index.html" th:href="@{/admin/index.html}">administration zone</a>
+        &nbsp;
+        (only admins)
+      </li>
+      <li>
+        Go to
+        <a href="user/index.html" th:href="@{/user/index.html}">user zone</a>
+        &nbsp;
+        (only users)
+      </li>
+      <li>
+        Go to
+        <a href="user/index.html" th:href="@{/shared/index.html}">shared zone</a>
+        &nbsp;
+        (both users and admins)
+      </li>
+    </ul>
+    <h2>Exception handling</h2>
+    <ul>
+      <li>
+        You can
+        <a href="error.html" th:href="@{/simulateError.html}">simulate an exception</a>
+        &nbsp;
+        to see custom ErrorPage.
+      </li>
+    </ul>
+  </body>
+</html>

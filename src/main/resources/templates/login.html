@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5" xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <title>Login page</title>
+    <meta charset="utf-8" />
+    <link href="../../static/css/main.css" rel="stylesheet" th:href="@{/css/main.css}" />
+  </head>
+  <body>
+    <h1>Login page</h1>
+    <p>Example administrator: jim / demo</p>
+    <p>Example user: bob / demo</p>
+    <p>Example user and administrator: ted / demo</p>
+    <p class="error" th:if="${loginError}">Wrong user or password</p>
+    <form method="post" th:action="@{/login.html}">
+      <label for="username">Username</label>:
+      <input autofocus="autofocus" id="username" name="username" type="text" />
+      <br />
+      <label for="password">Password</label>:
+      <input id="password" name="password" type="password" />
+      <br />
+      <input type="submit" value="Log in" />
+    </form>
+    <p>
+      <a href="../index.html" th:href="@{/index.html}">Back to home page</a>
+    </p>
+  </body>
+</html>

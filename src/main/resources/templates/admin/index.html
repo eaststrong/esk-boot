@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5" xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <title>Thymeleafexamples - Spring Security</title>
+    <meta charset="utf-8" />
+    <link href="../../static/css/main.css" rel="stylesheet" th:href="@{/css/main.css}" />
+  </head>
+  <body>
+    <div th:replace="index::logout"></div>
+    <h1>Thymeleafexamples - Spring Security</h1>
+    <p>
+      This is the
+      &nbsp;
+      <b>administration</b>
+      &nbsp;
+      zone
+    </p>
+    <p>
+      Only authenticated users with role
+      &nbsp;
+      <b>ADMIN</b>
+      &nbsp;
+      are allowed to see this page.
+    </p>
+    <p>
+      <a href="../index.html" th:href="@{/index.html}">Back to home page</a>
+    </p>
+  </body>
+</html>
