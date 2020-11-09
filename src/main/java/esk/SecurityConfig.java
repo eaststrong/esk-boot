@@ -1,7 +1,10 @@
 package esk;
 
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
+
+import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -9,11 +12,13 @@ import org.springframework.security.config.annotation.authentication.configurers
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.config.annotation.web.configurers.ChannelSecurityConfigurer;
 import org.springframework.security.config.annotation.web.configurers.ExceptionHandlingConfigurer;
 import org.springframework.security.config.annotation.web.configurers.ExpressionUrlAuthorizationConfigurer;
 import org.springframework.security.config.annotation.web.configurers.FormLoginConfigurer;
 import org.springframework.security.config.annotation.web.configurers.LogoutConfigurer;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.web.util.matcher.RequestMatcher;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.User.UserBuilder;
 
@@ -57,6 +62,18 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
   @Override
   protected void configure(HttpSecurity http) throws Exception {
+    ChannelSecurityConfigurer<HttpSecurity>.ChannelRequestMatcherRegistry channelRequestMatcherRegistry = http.requiresChannel();
+
+    RequestMatcher requestMatcher = new RequestMatcher() {      
+      @Override
+      public boolean matches(HttpServletRequest request) {
+        String string = request.getHeader("X-Forwarded-Proto");
+        return ! Objects.isNull(string);
+      }
+    };
+
+    ChannelSecurityConfigurer<HttpSecurity>.RequiresChannelUrl requiresChannelUrl = channelRequestMatcherRegistry.requestMatchers(requestMatcher);
+    requiresChannelUrl.requiresSecure();
     FormLoginConfigurer<HttpSecurity> formLoginConfigurer = http.formLogin();
     formLoginConfigurer = formLoginConfigurer.loginPage("/login.html");
     formLoginConfigurer = formLoginConfigurer.failureUrl("/login-error.html");
